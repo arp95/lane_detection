@@ -22,7 +22,7 @@ python problem1.py /home/arpitdec5/Desktop/enpm673/projects/Project2/data/Night.
 
 
 ```
-cd Code
+cd Code/
 python problem2_data1.py 'folder_path (containing images)'
 ```
 where, folder_path is the path for the folder. For example, running the python file on my local setup was:
@@ -34,7 +34,7 @@ python problem2_data1.py /home/arpitdec5/Desktop/enpm673/projects/Project2/data/
 
 
 ```
-cd Code
+cd Code/
 python problem2_data2.py 'video_path(in .mp4 format)'
 ```
 where, folder_path is the path for the folder. For example, running the python file on my local setup was:
