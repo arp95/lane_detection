@@ -1,35 +1,34 @@
+"""
+ *  MIT License
+ *
+ *  Copyright (c) 2019 Arpit Aggarwal Shantam Bajpai
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a
+ *  copy of this software and associated documentation files (the "Software"),
+ *  to deal in the Software without restriction, including without
+ *  limitation the rights to use, copy, modify, merge, publish, distribute,
+ *  sublicense, and/or sell copies of the Software, and to permit persons to
+ *  whom the Software is furnished to do so, subject to the following
+ *  conditions:
+ *
+ *  The above copyright notice and this permission notice shall be included
+ *  in all copies or substantial portions of the Software.
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ *  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ *  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ *  DEALINGS IN THE SOFTWARE.
+"""
+
 # header files
 import numpy as np
 import cv2
 
 # function for preprocessing of image
 def preprocess_image(frame, camera_matrix, dist_matrix):
-    # undistort the frame
-    frame = cv2.undistort(frame, camera_matrix, dist_matrix)
-    
-    # average blurring
-    frame = cv2.blur(frame, (3, 3))
-    
-    # Convert to HLS color space and apply masks
-    hls = cv2.cvtColor(frame, cv2.COLOR_BGR2HLS).astype(np.float)
-    lower_white = np.array([0, 200, 0], dtype=np.uint8)
-    upper_white = np.array([255, 255, 255], dtype=np.uint8)
-    white_mask = cv2.inRange(hls, lower_white, upper_white)
-    lower_yellow = np.array([50, 0, 100], dtype=np.uint8)
-    upper_yellow = np.array([50, 255, 255], dtype=np.uint8)
-    yellow_mask = cv2.inRange(hls, lower_yellow, upper_yellow)  
-    
-    # get the binary image
-    combined_binary = np.zeros((frame.shape[0], frame.shape[1]))
-    count = 0
-    for row in range(0, white_mask.shape[0]):
-        for col in range(0, white_mask.shape[1]):
-            if(white_mask[row, col] >= 200 or yellow_mask[row, col] >= 200):
-                combined_binary[row, col] = 255
-    return combined_binary
-
-# function for preprocessing of image
-def preprocess_image_video(frame, camera_matrix, dist_matrix):
     # undistort the frame
     frame = cv2.undistort(frame, camera_matrix, dist_matrix)
     
@@ -64,7 +63,7 @@ def get_birds_eye_view(frame):
     image = cv2.warpPerspective(image, homography_matrix, (image.shape[1], image.shape[0]))
     return (image, inv_homography_matrix)
 
-# get birds eye view
+# get birds eye view for video
 def get_birds_eye_view_video(frame):
     image = np.copy(frame)
     src = np.float32([[572, 510], [789, 510], [1092, 715], [282, 715]])
@@ -87,13 +86,13 @@ def get_left_and_right_lane(frame, prev_left_lane_fit, prev_right_lane_fit):
     right_lane_ind = []
     
     # iterate through windows and store left lane and right lane coordinates
-    for window in range(0, int(frame.shape[0] / 10)):
-        window_row_min = frame.shape[0] - ((window + 1) * int(frame.shape[0] / 10))
-        window_row_max = frame.shape[0] - (window * int(frame.shape[0] / 10))
-        window_col_left_low = left_col_current - 50
-        window_col_left_high = left_col_current + 50
-        window_col_right_low = right_col_current - 50
-        window_col_right_high = right_col_current + 50
+    for window in range(0, int(frame.shape[0] / 8)):
+        window_row_min = frame.shape[0] - ((window + 1) * int(frame.shape[0] / 8))
+        window_row_max = frame.shape[0] - (window * int(frame.shape[0] / 8))
+        window_col_left_low = left_col_current - 75
+        window_col_left_high = left_col_current + 75
+        window_col_right_low = right_col_current - 75
+        window_col_right_high = right_col_current + 75
         
         cv2.rectangle(image, (window_col_left_low, window_row_min), (window_col_left_high, window_row_max), (0, 255, 0))
         cv2.rectangle(image, (window_col_right_low, window_row_min), (window_col_right_high, window_row_max), (0, 0, 255))
@@ -108,7 +107,7 @@ def get_left_and_right_lane(frame, prev_left_lane_fit, prev_right_lane_fit):
                     left_sum = left_sum + col
                     left_lane_ind.append((row, col))
                     image[row, col] = (0, 255, 0)
-        if(left_count > 20):
+        if(left_count > 25):
             left_col_current = int(left_sum / left_count)
         
         # right lane window
@@ -121,7 +120,7 @@ def get_left_and_right_lane(frame, prev_left_lane_fit, prev_right_lane_fit):
                     right_sum = right_sum + col
                     right_lane_ind.append((row, col))
                     image[row, col] = (0, 0, 255)
-        if(right_count > 20):
+        if(right_count > 25):
             right_col_current = int(right_sum / right_count)
             
     # left lane and right lane fit
