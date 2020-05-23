@@ -1,9 +1,20 @@
-# Code for Project 2 of ENPM 673-Perception for Autonomous Robots
+# Lane Detection
+
+[![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)](LICENSE.md)
+---
 
 
 ### Authors
-Shantam Bajpai
 Arpit Aggarwal
+Shantam Bajpai
+
+
+### Introduction to the Project
+In this project, we used Homography and Histogram of Lane Pixels for Lane Detection. The algorithm is described in more detail in the "Report.pdf" file.
+
+
+### Software Required
+To run the .py files, use Python 3. Standard Python 3 libraries like OpenCV, Numpy, scipy and matplotlib are used.
 
 
 ### Instructions for running the code
@@ -45,5 +56,9 @@ python problem2_data2.py /home/arpitdec5/Desktop/enpm673/projects/Project2/data/
 ```
 
 
-### Software Required
-To run the .py files, use Python 3. Standard Python 3 libraries like OpenCV, Numpy, Scipy and matplotlib are used.
+### Credits
+The following links were helpful for this project:
+1. https://www.pyimagesearch.com/2016/03/21/ordering-coordinates-clockwise-with-python-and-opencv/
+2. https://www.pyimagesearch.com/2014/05/05/building-pokedex-python-opencv-perspective-warping-step-5-6/
+3. https://www.learnopencv.com/image-alignment-feature-based-using-opencv-c-python/
+4. https://docs.scipy.org/doc/numpy/reference/generated/numpy.polyfit.html
