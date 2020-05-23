@@ -4,9 +4,8 @@
 ---
 
 
-### Authors
+### Author
 Arpit Aggarwal
-Shantam Bajpai
 
 
 ### Introduction to the Project
